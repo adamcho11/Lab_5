@@ -7,9 +7,9 @@ if (!$fecha_ingreso || !$fecha_salida) {
 }
 $sql = "SELECT h.* FROM habitaciones h WHERE h.id NOT IN (
     SELECT habitacion_id FROM reservas
-    WHERE (fecha_ingreso < ? AND fecha_salida > ?)
+    WHERE ((fecha_ingreso < ? AND fecha_salida > ?)
     OR (fecha_ingreso < ? AND fecha_salida > ?)
-    OR (fecha_ingreso >= ? AND fecha_salida <= ?)
+    OR (fecha_ingreso >= ? AND fecha_salida <= ?))
     AND estado IN ('pendiente','confirmada')
 )";
 $stmt = $con->prepare($sql);
