@@ -1,0 +1,25 @@
+api/
+├── habitaciones/
+│   ├── mostrar.php            # GET    | Público     | Listar habitaciones
+│   ├── detalle.php            # GET    | Público     | Detalle + fotos habitación
+│   ├── disponibilidad.php     # GET    | Público     | Habitaciones disponibles por fecha
+│   ├── verfotos.php           # GET    | Público     | Ver fotos de una habitación
+│   ├── subirfotos.php         # POST   | Admin       | Subir foto a habitación
+│   ├── crear.php              # POST   | Admin       | Crear habitación
+│   ├── actualizar.php         # POST   | Admin       | Actualizar habitación
+│   └── delete.php             # POST   | Admin       | Eliminar habitación
+│
+├── usuarios/
+│   ├── registrar.php          # POST   | Público     | Registro de cliente
+│   ├── crear.php              # POST   | Admin       | Crear usuario cliente/admin
+│   ├── mostrar.php            # GET    | Admin       | Ver todos los usuarios
+│   ├── detalle.php            # GET    | Admin/User  | Ver datos usuario
+│   ├── actualizar.php         # POST   | Admin/User  | Actualizar usuario
+│   └── delete.php             # POST   | Admin       | Eliminar usuario
+│
+└── reservas/
+    ├── crear.php              # POST   | User        | Crear reserva propia
+    ├── mostrar.php            # GET    | Admin/User  | Ver reservas (todas/propias)
+    ├── actualizar.php         # POST   | Admin/User  | Actualizar reserva
+    ├── cancelar.php           # POST   | Admin/User  | Cancelar reserva
+    └── delete.php             # POST   | Admin       | Eliminar reserva
