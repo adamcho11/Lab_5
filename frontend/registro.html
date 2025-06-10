@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <div class="container" style="max-width:380px;">
+        <h1>Registrarse</h1>
+        <form id="registerForm">
+            <label>Nombre</label>
+            <input type="text" id="nombre" required>
+            <label>Email</label>
+            <input type="email" id="email" required>
+            <label>Contraseña</label>
+            <input type="password" id="password" required>
+            <button class="btn" type="submit">Crear cuenta</button>
+        </form>
+        <div id="msg"></div>
+        <div style="margin-top:14px;text-align:center;">
+            ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+        </div>
+    </div>
+    <script>
+    document.getElementById("registerForm").onsubmit = function(e) {
+        e.preventDefault();
+        const nombre = document.getElementById("nombre").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        fetch("../api/usuarios/registrar.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombre, email, password })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("msg").textContent = "¡Cuenta creada! Ahora inicia sesión.";
+                setTimeout(() => window.location.href = "login.html", 1400);
+            } else {
+                document.getElementById("msg").textContent = data.mensaje || "Error al registrar.";
+            }
+        });
+    }
+    </script>
+</body>
+</html>

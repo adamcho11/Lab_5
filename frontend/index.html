@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>HotelApp - Inicio</title>
+    <script src="js/habitaciones.js"></script>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <button class="btn" onclick="window.location='login.html'">Iniciar sesión</button>
+            <button class="btn" onclick="window.location='registro.html'">Registrarse</button>
+            <button class="btn" onclick="window.location='usuario.html'">Mi cuenta</button>
+        </div>
+        <h1>HotelApp</h1>
+        <div class="searchbox">
+            <label>Ingreso:</label>
+            <input type="date" id="fecha_ingreso">
+            <label>Salida:</label>
+            <input type="date" id="fecha_salida">
+            <button class="btn" onclick="buscarHabitaciones()">Buscar habitaciones</button>
+        </div>
+        <div id="resultados">
+            <!-- Aquí se mostrarán habitaciones -->
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <script>
+    function buscarHabitaciones() {
+        const fecha_ingreso = document.getElementById("fecha_ingreso").value;
+        const fecha_salida = document.getElementById("fecha_salida").value;
+        if (!fecha_ingreso || !fecha_salida) {
+            document.getElementById("resultados").innerHTML = "<div style='color:#a00'>Selecciona fechas de ingreso y salida.</div>";
+            return;
+        }
+        fetch(`../api/habitaciones/disponibilidad.php?fecha_ingreso=${fecha_ingreso}&fecha_salida=${fecha_salida}`)
+            .then(r => r.json())
+            .then(habs => {
+                let html = "";
+                if (!habs || habs.length === 0) {
+                    html = "<div>No hay habitaciones disponibles en esas fechas.</div>";
+                } else {
+                    habs.forEach(h => {
+                        html += `<div class="hab-card">
+                            <h3>Habitación #${h.numero} (${h.nombre_tipo})</h3>
+                            <div><b>Piso:</b> ${h.piso} &nbsp; <b>Camas:</b> ${h.numero_camas}</div>
+                            <button class="btn" onclick="verDetalle(${h.id})">Ver detalle</button>
+                        </div>`;
+                    });
+                }
+                document.getElementById("resultados").innerHTML = html;
+            });
+    }
+
+    function verDetalle(id) {
+        // Cargar el detalle, puede abrir modal, o redirigir
+        window.location.href = `detalle.html?id=${id}`;
+    }
+    </script>
+</body>
+</html>

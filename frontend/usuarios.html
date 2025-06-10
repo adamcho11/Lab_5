@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi cuenta - Hotel</title>
+    <link href="https://fonts.googleapis.com/css?family=Inter:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f7f7f7;
+            font-family: 'Inter', Arial, sans-serif;
+            color: #222;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 16px #0001;
+            padding: 32px 32px 24px 32px;
+        }
+        h2 {
+            font-size: 2rem;
+            margin: 0 0 24px 0;
+            color: #9b8137;
+            letter-spacing: 2px;
+        }
+        .section-title {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: #444;
+        }
+        label { display: block; margin: 12px 0 4px 0; font-weight: 600; }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e2e2;
+            border-radius: 6px;
+            background: #fafafa;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            background: #9b8137;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            border-radius: 7px;
+            padding: 10px 22px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+        .btn[disabled] {
+            background: #ccc;
+        }
+        .msg {
+            margin: 10px 0 0 0;
+            font-size: 0.95rem;
+        }
+        table {
+            width: 100%; margin-top: 18px; border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        th { background: #f4f4f4; color: #7a6823; }
+        .acciones .btn { margin: 0 2px; padding: 5px 12px; font-size: 0.97rem; }
+        .logout-link { float: right; color: #9b8137; text-decoration: underline; cursor: pointer; margin-top: -12px; font-size: 0.98rem;}
+    </style>
+    <script src="js/usuarios.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Mi cuenta <span class="logout-link" onclick="logout()">Cerrar sesión</span></h2>
+        
+        <div>
+            <div class="section-title">Datos personales</div>
+            <form id="formPerfil">
+                <label>Nombre</label>
+                <input type="text" id="nombre" required>
+                <label>Email</label>
+                <input type="email" id="email" disabled>
+                <label>Nueva contraseña</label>
+                <input type="password" id="password" placeholder="(opcional)">
+                <button class="btn" type="submit">Actualizar datos</button>
+            </form>
+            <div class="msg" id="msgPerfil"></div>
+        </div>
+
+        <div style="margin-top:38px">
+            <div class="section-title">Mis reservas</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Habitación</th>
+                        <th>Ingreso</th>
+                        <th>Salida</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaReservas"></tbody>
+            </table>
+            <div class="msg" id="msgReserva"></div>
+        </div>
+    </div>
+
+    
+</body>
+</html>
