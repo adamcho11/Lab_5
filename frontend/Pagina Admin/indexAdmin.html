@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styleadmin.css">
+    <script src="ajaxAdmin.js"></script>
+</head>
+
+<body onload="javascript:cargardatos()">
+    <nav id="nav">
+        <div id="Titulo">
+            <h1>H</h1>
+            <h2>Hotel</h2>
+        </div>
+        <div id="OpenMenu">
+            <button id="BtnMenu">=</button>
+        </div>
+        <div id="datos">
+            <select id="Option" onchange="javascript:selectUser()">
+                <option selected id="NombreUser"></option>
+                <option value="cerrarLog">Cerrar Sesion</option>
+            </select>
+        </div>
+    </nav>
+    <div id="contenido_2">
+        <div id="contenido_21" style="display: none; width: 237px;">
+            <button id="btn1" onclick="javascript:mostrartabla()">Usuarios</button>
+            <button id="btn2" onclick="javascript:mostrarHabitaciones()">Habitaciones</button>
+        </div>
+        <div id="contenido_22" style="padding: 20px;">
+            <div id="contenido_221">
+                <h1>Panel del Administrador</h1>
+            </div>
+            <div id="contenido_222"></div>
+        </div>
+    </div>
+
+    <div id="modal" style="display: none;">
+        <div id="cuadromodal">
+            <button id="cerrar" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div id="contenidomodal">
+            </div>
+        </div>
+    </div>
+    <script>
+        const RegIni = document.getElementById('BtnMenu');
+        let isRegistrarse = false; // Esta variable controlará qué formulario se muestra
+        const titulo = document.getElementById('Titulo');
+        // Añadir el evento al botón
+        RegIni.addEventListener('click', () => {
+            // Alternar la visibilidad de los formularios
+            if (isRegistrarse) {
+                document.getElementById('contenido_21').style.display = "block";
+                titulo.style.backgroundColor = 'rgb(114, 87, 29)';
+                titulo.style.color = 'white';
+            } else {
+                document.getElementById('contenido_21').style.display = "none";
+                titulo.style.backgroundColor = 'rgb(239, 232, 213)';
+                titulo.style.color = 'rgb(114, 87, 29)';
+            }
+            isRegistrarse = !isRegistrarse; // Alternar el valor de la variable
+        });
+    </script>
+</body>
+
+</html>

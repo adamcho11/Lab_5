@@ -1,15 +1,19 @@
 <?php
 session_start();
 require_once '../../backend/conexion_bd.php';
-$id = intval($_GET['id'] ?? 0);
-if (!isset($_SESSION['usuario'])) {
-    echo json_encode(['success' => false, 'mensaje' => 'No logueado']); exit;
+
+$id = $_SESSION['id'];
+
+// Usar sentencia preparada para evitar inyección SQL
+$stmt = $con->prepare("SELECT id, nombre, email, rol, estado_cuenta AS estado FROM usuarios WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+if ($resultado && $fila = $resultado->fetch_assoc()) {
+    echo json_encode($fila);
+} else {
+    echo json_encode(['success' => false, 'mensaje' => 'Usuario no encontrado']);
 }
-$es_admin = $_SESSION['usuario']['rol'] === 'administrador';
-$es_propio = $_SESSION['usuario']['id'] == $id;
-if (!$es_admin && !$es_propio) {
-    echo json_encode(['success' => false, 'mensaje' => 'No permitido']); exit;
-}
-$res = $con->query("SELECT id, nombre, email, rol, estado FROM usuarios WHERE id = $id");
-echo json_encode($res->fetch_assoc());
 ?>
+

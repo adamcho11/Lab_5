@@ -1,15 +1,39 @@
-<?php
+<?php session_start();
 require_once '../../backend/conexion_bd.php';
-$data = json_decode(file_get_contents("php://input"));
-$nombre = $data->nombre ?? '';
-$email = $data->email ?? '';
-$password = $data->password ?? '';
-$rol = 'cliente'; // Fijo para registros públicos
-if ($nombre && $email && $password) {
-    $hash = sha1($password);
-    $stmt = $con->prepare("INSERT INTO usuarios (nombre, email, contraseña, rol) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $nombre, $email, $hash, $rol);
-    if ($stmt->execute()) echo json_encode(['success' => true]);
-    else echo json_encode(['success' => false, 'mensaje' => 'No se pudo registrar']);
-} else echo json_encode(['success' => false, 'mensaje' => 'Datos incompletos']);
+
+$nombre = $_POST['nombre'];
+$email = $_POST['email'];
+$contraseña = $_POST['password'];
+$rol = $_POST['rol'];
+$estado = $_POST['estado'];
+
+// Preparar la consulta
+$stmt = $con->prepare('INSERT INTO usuarios(nombre, email, contraseña, rol, estado_cuenta) VALUES(?, ?, ?, ?, ?)');
+
+// Vincular parámetros (todos los parámetros son string)
+$stmt->bind_param("ssss", $nombre, $email, $contraseña, $rol);
+
+// Ejecutar la consulta
+if ($stmt->execute()) {
+    $nuevo_id = $stmt->insert_id; // Obtener el ID insertado
+
+    // Asignar las variables a la sesión después de que la cuenta haya sido registrada
+    $_SESSION['id'] = $nuevo_id;
+    $_SESSION['nombre'] = $nombre;
+    $_SESSION['email'] = $email;
+    $_SESSION['rol'] = $rol;
+    $_SESSION['estado_cuenta'] = $estado;
+
+    $respuesta = [
+        'success' => true,
+        'message' => 'Cuenta Registrada'
+    ];
+} else {
+    $respuesta = [
+        'success' => false,
+        'message' => 'Error al Crear Cuenta'
+    ];
+}
+
+echo json_encode($respuesta);
 ?>

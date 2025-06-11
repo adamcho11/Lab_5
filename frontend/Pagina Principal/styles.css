@@ -1,0 +1,141 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    margin: 0;
+}
+
+#modal {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.204);
+}
+#modal #cuadromodal{
+    position: absolute;
+    background-color: rgba(255, 252, 244, 0);
+    width: 250px;
+    transform: translate(500px, 50px);
+}
+
+#modal #cuadromodal #cerrar{
+    height: 10px;
+    width: 10px;
+    font-size: 10px;
+    background-color: rgba(255, 255, 255, 0);
+    color: black;
+    border: none;
+    z-index: 4;
+    position: fixed;
+    transform: translate(200px 300px);
+}
+
+.container {
+    max-width: 1100px;
+    margin: 50px auto 0 auto;
+    background: #fff;
+    padding: 30px 30px 24px 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 14px #0001;
+}
+
+h1 {
+    color: #9b8137;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 24px;
+}
+
+.topbar {
+    text-align: right;
+    margin-bottom: 18px;
+}
+
+.btn {
+    background: #9b8137;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 22px;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.searchbox {
+    margin: 24px 0 16px 0;
+    text-align: center;
+}
+
+#titulo-resultados {
+    color: #9b8137;
+    font-size: 1.3rem;
+    margin-top: 30px;
+    margin-bottom: 22px;
+    text-align: left;
+}
+
+/* GRID CUADRÍCULA */
+#resultados {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.hab-card {
+    background: #f6f6f6;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px #0001;
+    width: calc(33.333% - 16px); /* 3 por fila */
+    min-width: 220px;
+    max-width: 320px;
+    margin-bottom: 18px;
+    padding: 13px 14px 18px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.2s;
+}
+.hab-card:hover {
+    box-shadow: 0 6px 18px #0002;
+}
+
+.hab-card img {
+    width: 100%;
+    max-width: 210px;
+    aspect-ratio: 1.25/1;
+    border-radius: 8px;
+    background: #eee;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.hab-card h3 {
+    margin: 0 0 7px 0;
+    color: #8a7931;
+    font-size: 1.08rem;
+    text-align: center;
+}
+.hab-card .btn {
+    padding: 7px 14px;
+    font-size: 0.98rem;
+    margin-top: 7px;
+    background: #9b8137;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .hab-card { width: calc(50% - 14px);}
+}
+@media (max-width: 600px) {
+    #resultados { gap: 14px;}
+    .hab-card { width: 100%; max-width: none;}
+}

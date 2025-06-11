@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>HotelApp - Inicio</title>
+    <script src="ajax.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body onload="javascript:cargarTodas();">
+    <div class="container">
+        <div class="topbar">
+            <button class="btn" onclick="javascript:abrirmodal()">Iniciar sesión</button>
+            <button class="btn" onclick="window.location='usuario.html'">Mi cuenta</button>
+        </div>
+        <h1>HotelApp</h1>
+        <div class="searchbox">
+            <label>Ingreso:</label>
+            <input type="date" id="fecha_ingreso">
+            <label>Salida:</label>
+            <input type="date" id="fecha_salida">
+            <button class="btn" onclick="buscarHabitaciones()">Buscar habitaciones</button>
+        </div>
+        <div id="resultados">
+            <!-- Aquí se mostrarán habitaciones -->
+        </div>
+
+        <div id="modal" style="display: none;">
+            <div id="cuadromodal">
+                <button id="cerrar" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div id="contenidomodal">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const RegIni = document.getElementById('BtnMenu');
+        let isRegistrarse = false; // Esta variable controlará qué formulario se muestra
+        const titulo = document.getElementById('Titulo');
+        // Añadir el evento al botón
+        RegIni.addEventListener('click', () => {
+            // Alternar la visibilidad de los formularios
+            if (isRegistrarse) {
+                document.getElementById('contenido_21').style.display = "block";
+                titulo.style.backgroundColor = 'rgb(114, 87, 29)';
+                titulo.style.color = 'white';
+            } else {
+                document.getElementById('contenido_21').style.display = "none";
+                titulo.style.backgroundColor = 'rgb(239, 232, 213)';
+                titulo.style.color = 'rgb(114, 87, 29)';
+            }
+            isRegistrarse = !isRegistrarse; // Alternar el valor de la variable
+        });
+
+        function buscarHabitaciones() {
+            const fecha_ingreso = document.getElementById("fecha_ingreso").value;
+            const fecha_salida = document.getElementById("fecha_salida").value;
+            if (!fecha_ingreso || !fecha_salida) {
+                document.getElementById("resultados").innerHTML = "<div style='color:#a00'>Selecciona fechas de ingreso y salida.</div>";
+                return;
+            }
+            fetch(`../api/habitaciones/disponibilidad.php?fecha_ingreso=${fecha_ingreso}&fecha_salida=${fecha_salida}`)
+                .then(r => r.json())
+                .then(habs => {
+                    let html = "";
+                    if (!habs || habs.length === 0) {
+                        html = "<div>No hay habitaciones disponibles en esas fechas.</div>";
+                    } else {
+                        habs.forEach(h => {
+                            html += `<div class="hab-card">
+                            <h3>Habitación #${h.numero} (${h.nombre_tipo})</h3>
+                            <div><b>Piso:</b> ${h.piso} &nbsp; <b>Camas:</b> ${h.numero_camas}</div>
+                            <button class="btn" onclick="verDetalle(${h.id})">Ver detalle</button>
+                        </div>`;
+                        });
+                    }
+                    document.getElementById("resultados").innerHTML = html;
+                });
+        }
+
+        function verDetalle(id) {
+            // Cargar el detalle, puede abrir modal, o redirigir
+            window.location.href = `detalle.html?id=${id}`;
+        }
+    </script>
+</body>
+
+</html>
