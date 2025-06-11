@@ -1,16 +1,30 @@
 <?php
-session_start();
 require_once '../../backend/conexion_bd.php';
-$id = intval($_GET['id'] ?? 0);
-$es_propio = $_SESSION['usuario']['id'] == $id;
-if (!$es_admin && !$es_propio) {
-    echo json_encode(['success' => false, 'mensaje' => 'No permitido']); exit;
+
+header('Content-Type: application/json');
+
+// Get userId from cookie
+$userId = $_COOKIE['userId'] ?? null;
+
+if (!$userId) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'mensaje' => 'No autenticado.']);
+    exit();
 }
-$es_admin = $_SESSION['usuario']['rol'] === 'administrador';
-$es_propio = $_SESSION['usuario']['id'] == $id;
-if (!$es_admin && !$es_propio) {
-    echo json_encode(['success' => false, 'mensaje' => 'No permitido']); exit;
+
+$stmt = $con->prepare("SELECT id, nombre, email, rol FROM usuarios WHERE id=?");
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$usuario = $result->fetch_assoc();
+
+if ($usuario) {
+    echo json_encode($usuario);
+} else {
+    http_response_code(404);
+    echo json_encode(['success' => false, 'mensaje' => 'Usuario no encontrado.']);
 }
-$res = $con->query("SELECT id, nombre, email, rol, estado FROM usuarios WHERE id = $id");
-echo json_encode($res->fetch_assoc());
+
+$stmt->close();
+$con->close();
 ?>

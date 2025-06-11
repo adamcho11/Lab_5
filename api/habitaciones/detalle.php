@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 require_once '../../backend/conexion_bd.php';
 $id = intval($_GET['id'] ?? 0);
 $sql = "SELECT h.*, t.nombre_tipo, t.superficie, t.numero_camas

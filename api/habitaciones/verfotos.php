@@ -1,10 +1,11 @@
 <?php
 require_once '../../backend/conexion_bd.php';
-$habitacion_id = intval($_GET['habitacion_id'] ?? 0);
-$fotos = [];
-if ($habitacion_id > 0) {
-    $res = $con->query("SELECT id, fotografia, orden FROM fotografias_habitacion WHERE habitacion_id = $habitacion_id ORDER BY orden ASC");
-    while ($f = $res->fetch_assoc()) $fotos[] = $f;
-}
-echo json_encode($fotos);
+$sql = "SELECT h.*, t.nombre_tipo, t.superficie, t.numero_camas,
+        (SELECT fotografia FROM fotografias_habitacion f WHERE f.habitacion_id = h.id ORDER BY orden ASC LIMIT 1) AS fotografia
+        FROM habitaciones h
+        JOIN tipo_habitacion t ON h.tipo_id = t.id";
+$res = $con->query($sql);
+$habitaciones = [];
+while ($h = $res->fetch_assoc()) $habitaciones[] = $h;
+echo json_encode($habitaciones);
 ?>

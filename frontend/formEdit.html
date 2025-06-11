@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Datos</title>
+</head>
+
+<body>
+    <!-- Formulario: Editar Habitación -->
+    <form id="datosH" action="javascript:editarHabitacion()" method="post" enctype="multipart/form-data">
+        <div>
+            <h1>Editar Habitación</h1>
+        </div>
+        <input type="hidden" id="idH" name="id">
+        <input type="text" id="nombreH" name="nombreH" placeholder="Nombre de la habitación" required>
+        <input type="number" id="precio" name="precio" placeholder="Precio de la habitación" required>
+        <input type="number" id="piso" name="piso" placeholder="Piso de la habitación" required>
+        <select name="TipoH" id="TipoH">
+            <!-- Se llena dinámicamente -->
+        </select>
+        <button id="BtnTh" onclick="javascript:abrirmodal('TH')">+ Nuevo Tipo de Habitación</button>
+        <button id="BtnTHE">Editar Tipo de Habitación</button>
+        <input type="submit" value="Guardar Cambios de Habitación">
+    </form>
+
+    <!-- Formulario: Editar Tipo de Habitación -->
+    <form id="datosTH" action="javascript:editarTipoHabitacion()" method="post" enctype="multipart/form-data">
+        <div>
+            <h1>Editar Tipo de Habitación</h1>
+        </div>
+        <input type="hidden" id="idTH" name="id">
+        <input type="text" id="nombretipo" name="nombretipo" placeholder="Nombre del tipo de habitación" required>
+        <input type="text" id="superficie" name="superficie" placeholder="Superficie (ej: 5x4)" required>
+        <input type="number" id="ncamas" name="ncamas" placeholder="Número de camas" required>
+        <input type="submit" value="Guardar Cambios del Tipo">
+    </form>
+
+    <!-- Formulario: Editar Fotografía de Habitación -->
+    <form id="datosFH" action="javascript:editarFotoHabitacion()" method="post" enctype="multipart/form-data">
+        <div>
+            <h1>Editar Fotografía</h1>
+        </div>
+        <input type="hidden" id="idFH" name="id">
+        <label for="fotografia">Seleccione una fotografía para la habitación:</label>
+        <input type="file" id="fotografia" name="fotografia" accept="image/*">
+        <input type="number" id="orde" name="orden" placeholder="Orden de la imagen" required>
+        <input type="number" id="inputIdHabitacion" name="habitacion" hidden>
+        <input type="submit" value="Guardar Fotografía">
+    </form>
+</body>
+
+</html>

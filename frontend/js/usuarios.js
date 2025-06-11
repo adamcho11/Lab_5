@@ -6,28 +6,31 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function cargarPerfil() {
-    // Obtener el userId del localStorage, sessionStorage, o cookie según tu implementación
-    // Por ejemplo, si lo guardaste en localStorage:
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-        alert("No autenticado o sesión expirada");
-        window.location.href = "login.html";
-        return;
-    }
-    fetch(`../api/usuarios/detalle.php?id=${userId}`)
-    .then(r => r.json())
+    // The userId is now managed by an HttpOnly cookie on the backend, so we don't retrieve it here.
+    // The backend API should read the cookie directly.
+    fetch(`../api/usuarios/detalle.php`)
+    .then(r => {
+        if (r.status === 401) { // Unauthorized, session expired or not logged in
+            alert("Sesión expirada o no autenticado.");
+            window.location.href = "index.html"; // Redirect to login
+            return Promise.reject("Unauthorized");
+        }
+        return r.json();
+    })
     .then(data => {
         if (!data || !data.id) {
-            alert("Error al cargar perfil: " + (data && data.mensaje ? data.mensaje : "No autenticado o sesión expirada"));
-            window.location.href = "login.html";
+            alert("Error al cargar perfil: " + (data && data.mensaje ? data.mensaje : "No permitido"));
+            window.location.href = "index.html";
             return;
         }
         document.getElementById("nombre").value = data.nombre;
         document.getElementById("email").value = data.email;
     })
     .catch(error => {
-        alert("Error de red: " + error);
-        window.location.href = "login.html";
+        if (error !== "Unauthorized") { // Avoid showing alert twice for unauthorized
+            alert("Error de red o del servidor: " + error);
+        }
+        window.location.href = "index.html";
     });
 }
 
@@ -44,12 +47,11 @@ function actualizarPerfil(e) {
         document.getElementById("msgPerfil").textContent = "La contraseña debe tener al menos 6 caracteres.";
         return;
     }
-    const userId = localStorage.getItem("userId");
+    // userId is now managed by an HttpOnly cookie on the backend
     fetch("../api/usuarios/actualizar.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            id: userId,
             nombre,
             password,
             email
@@ -73,7 +75,8 @@ function cargarReservas() {
             return;
         }
         reservas.forEach(r => {
-            tbody.innerHTML += `
+            if (r && r.habitacion !== undefined && r.habitacion !== null) {
+                tbody.innerHTML += `
                 <tr>
                     <td>${r.id}</td>
                     <td>${r.habitacion}</td>
@@ -84,6 +87,7 @@ function cargarReservas() {
                         ${r.estado !== "cancelada" ? `<button class="btn" onclick="cancelarReserva(${r.id})">Cancelar</button>` : ""}
                     </td>
                 </tr>`;
+            }
         });
     });
 }
@@ -104,5 +108,9 @@ function cancelarReserva(id) {
 
 function logout() {
     fetch("../backend/logout.php")
-        .then(() => window.location.href = "login.html");
+        .then(() => {
+            // Remove the userId cookie on logout
+            document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            window.location.href = "index.html";
+        });
 }

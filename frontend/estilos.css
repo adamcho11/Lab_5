@@ -4,7 +4,7 @@ body {
     margin: 0;
 }
 
-.container {
+.container1 {
     max-width: 1100px;
     margin: 50px auto 0 auto;
     background: #fff;
@@ -25,7 +25,7 @@ h1 {
     margin-bottom: 18px;
 }
 
-.btn {
+.btn1 {
     background: #9b8137;
     color: #fff;
     font-weight: bold;
@@ -36,7 +36,7 @@ h1 {
     margin-left: 8px;
 }
 
-.searchbox {
+.searchbox1 {
     margin: 24px 0 16px 0;
     text-align: center;
 }

@@ -1,40 +1,50 @@
 <?php
-session_start();
 require_once '../../backend/conexion_bd.php';
+
+header('Content-Type: application/json');
+
+// Get userId from cookie
+$userId = $_COOKIE['userId'] ?? null;
+
+if (!$userId) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'mensaje' => 'No autenticado.']);
+    exit();
+}
+
 $data = json_decode(file_get_contents("php://input"));
-$id = $data->id ?? 0;
-if (!isset($_SESSION['usuario'])) {
-    echo json_encode(['success' => false, 'mensaje' => 'No logueado']); exit;
-}
-$es_admin = $_SESSION['usuario']['rol'] === 'administrador';
-$es_propio = $_SESSION['usuario']['id'] == $id;
-if (!$es_admin && !$es_propio) {
-    echo json_encode(['success' => false, 'mensaje' => 'No permitido']); exit;
-}
 $nombre = $data->nombre ?? '';
 $email = $data->email ?? '';
 $password = $data->password ?? '';
-$rol = $data->rol ?? '';
-$estado = $data->estado ?? '';
-if ($es_admin) {
-    if ($password) {
-        $hash = sha1($password);
-        $stmt = $con->prepare("UPDATE usuarios SET nombre=?, email=?, contraseña=?, rol=?, estado=? WHERE id=?");
-        $stmt->bind_param("sssssi", $nombre, $email, $hash, $rol, $estado, $id);
-    } else {
-        $stmt = $con->prepare("UPDATE usuarios SET nombre=?, email=?, rol=?, estado=? WHERE id=?");
-        $stmt->bind_param("ssssi", $nombre, $email, $rol, $estado, $id);
+
+if ($nombre && $email) {
+    $stmt = $con->prepare("SELECT id FROM usuarios WHERE email=? AND id!=?");
+    $stmt->bind_param("si", $email, $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        echo json_encode(['success' => false, 'mensaje' => 'El email ya está registrado por otro usuario.']);
+        exit();
     }
-} else {
+
     if ($password) {
         $hash = sha1($password);
         $stmt = $con->prepare("UPDATE usuarios SET nombre=?, email=?, contraseña=? WHERE id=?");
-        $stmt->bind_param("sssi", $nombre, $email, $hash, $id);
+        $stmt->bind_param("sssi", $nombre, $email, $hash, $userId);
     } else {
         $stmt = $con->prepare("UPDATE usuarios SET nombre=?, email=? WHERE id=?");
-        $stmt->bind_param("ssi", $nombre, $email, $id);
+        $stmt->bind_param("ssi", $nombre, $email, $userId);
     }
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'mensaje' => 'Datos actualizados.']);
+    } else {
+        echo json_encode(['success' => false, 'mensaje' => 'Error al actualizar datos.']);
+    }
+} else {
+    echo json_encode(['success' => false, 'mensaje' => 'Datos incompletos.']);
 }
-if ($stmt->execute()) echo json_encode(['success' => true]);
-else echo json_encode(['success' => false, 'mensaje' => 'Error']);
+
+$stmt->close();
+$con->close();
 ?>

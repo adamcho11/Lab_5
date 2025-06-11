@@ -1,0 +1,241 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9; /* Changed to match estilos.css */
+    margin: 0;
+    padding: 0;
+}
+.main-container { /* New container for the whole admin page content */
+    display: flex;
+    flex-direction: column;
+    max-width: 1100px; /* Added to match container1 in estilos.css */
+    margin: 50px auto 0 auto; /* Added to center and position */
+    background: #fff; /* Changed to match container1 in estilos.css */
+    padding: 30px 30px 24px 30px; /* Changed to match container1 in estilos.css */
+    border-radius: 12px; /* Changed to match container1 in estilos.css */
+    box-shadow: 0 2px 14px rgba(0,0,0,0.06); /* Changed to match container1 in estilos.css */
+}
+.topbar { /* Adapted from index.html */
+    background: none; /* No background here, will be transparent */
+    color: #9b8137; /* Text color for buttons etc. */
+    padding: 0; /* Remove padding here, controlled by inner elements */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 18px; /* Added to match estilos.css topbar margin */
+}
+.topbar h1, .topbar h2, .topbar .logo { /* These are now in admin-title */
+    display: none;
+}
+.topbar .btn1 {
+    background: #9b8137; /* Gold color from index.html buttons */
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 7px; /* Changed to match estilos.css */
+    padding: 10px 22px; /* Changed to match estilos.css */
+    cursor: pointer;
+    margin-left: 8px; /* Added margin */
+}
+.user-info select { /* Renamed from .topbar select */
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #333;
+}
+
+/* New section for the main title */
+.admin-title {
+    color: #9b8137;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 24px;
+}
+.admin-title h1, .admin-title h2 {
+    display: inline-block;
+    margin: 0;
+    color: #9b8137;
+    font-size: 2rem; /* Adjusted for consistency */
+}
+.admin-title h2 {
+    font-size: 1.5rem; /* Adjusted for consistency */
+    margin-left: 10px;
+}
+
+/* Admin Panel Specific Layout */
+.admin-content-wrapper { /* New wrapper for sidebar and main content */
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+}
+#contenido_21 { /* Sidebar */
+    width: 250px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+    display: none; /* Hide sidebar by default */
+}
+#contenido_21 button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #9b8137;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+}
+#contenido_21 button:hover {
+    background: #7a6823;
+}
+#contenido_22 { /* Main content area */
+    flex-grow: 1;
+    padding: 20px;
+    background: transparent; /* Changed to transparent */
+}
+#contenido_221 h1 {
+    font-size: 2em;
+    color: #9b8137;
+    margin-bottom: 20px;
+}
+
+
+#modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.5);
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+#cuadromodal {
+    margin: 200px;
+    background: #fff;
+    padding: 36px 30px 24px 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    width: 90%; /* Responsive width */
+    max-width: 520px; /* Max width for larger screens */
+    position: relative; /* Needed for absolute positioning of close button */
+}
+#cuadromodal h2 {
+    color: #9b8137;
+    text-align: center;
+    margin-bottom: 24px;
+}
+#cuadromodal label {
+    font-weight: 600;
+    margin-top: 8px;
+    display: block;
+}
+#cuadromodal input {
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+#cuadromodal button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #9b8137;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 16px;
+}
+.btn-close {
+    float: right;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #9b8137;
+}
+.btn-close:hover {
+    color: #7a6823;
+}
+/* Table styles for user/habitacion lists */
+#tablaUser, table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+#tablaUser th, table th {
+    background-color: #9b8137;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+#tablaUser td, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+#tablaUser tr:nth-child(even), table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+#tablaUser tr:hover, table tr:hover {
+    background-color: #ddd;
+}
+/* Styles for generated cards */
+#card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+#card > div {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 300px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+#card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+#card h2 {
+    color: #9b8137;
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+#card p, #card h4 {
+    color: #555;
+    margin: 5px 0;
+    font-size: 0.95em;
+}
+#card button {
+    background: #9b8137;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: normal;
+    width: auto;
+    display: inline-block;
+    margin-right: 5px;
+}
+#card button:hover {
+    background: #7a6823;
+}

@@ -69,13 +69,28 @@
         }
         th { background: #f4f4f4; color: #7a6823; }
         .acciones .btn { margin: 0 2px; padding: 5px 12px; font-size: 0.97rem; }
-        .logout-link { float: right; color: #9b8137; text-decoration: underline; cursor: pointer; margin-top: -12px; font-size: 0.98rem;}
+        .header-links {
+            float: right;
+            margin-top: -12px;
+        }
+        .header-link {
+            color: #9b8137;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.98rem;
+            margin-left: 20px;
+        }
     </style>
     <script src="js/usuarios.js"></script>
 </head>
 <body>
     <div class="container">
-        <h2>Mi cuenta <span class="logout-link" onclick="logout()">Cerrar sesión</span></h2>
+        <h2>Mi cuenta 
+            <div class="header-links">
+                <span class="header-link" onclick="window.location.href='index.html'">Volver al inicio</span>
+                <span class="header-link" onclick="logout()">Cerrar sesión</span>
+            </div>
+        </h2>
         
         <div>
             <div class="section-title">Datos personales</div>
@@ -109,7 +124,5 @@
             <div class="msg" id="msgReserva"></div>
         </div>
     </div>
-
-    
 </body>
 </html>
