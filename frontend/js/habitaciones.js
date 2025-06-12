@@ -29,8 +29,8 @@ function cargarTodas() {
 }
 
 function buscarHabitaciones() {
-    const fecha_ingreso = document.getElementById("fecha_ingreso").value;
-    const fecha_salida = document.getElementById("fecha_salida").value;
+    const fecha_ingreso = document.getElementById("fecha_ingreso1").value;
+    const fecha_salida = document.getElementById("fecha_salida1").value;
     
     if (!fecha_ingreso || !fecha_salida) {
         document.getElementById("resultados").innerHTML = "<div style='color:#a00'>Selecciona fechas de ingreso y salida.</div>";
@@ -70,9 +70,9 @@ function reiniciarFiltros() {
 
 function obtenerPrimeraImagen(h) {
     if (h.fotografia) {
-        return `imghabit/${h.fotografia}`;
+        return `imgHabit/${h.fotografia}`;
     }
-    return "imghabit/no-image.png";
+    return "imgHabit/no-image.png";
 }
 
 function verDetalle(id) {
@@ -85,7 +85,7 @@ function verDetalle(id) {
             function renderCarrusel() {
                 let html = `
                     <div style="text-align:center;">
-                        <img src="imghabit/${fotos[current].fotografia}" style="max-width:400px;max-height:300px;border-radius:8px;box-shadow:0 2px 8px #0002;">
+                        <img src="imgHabit/${fotos[current].fotografia}" style="max-width:400px;max-height:300px;border-radius:8px;box-shadow:0 2px 8px #0002;">
                         <div style="margin:10px 0;">
                             <button id="prevFoto" ${current === 0 ? "disabled" : ""}>&lt;</button>
                             <span>${current + 1} / ${fotos.length}</span>
@@ -126,28 +126,86 @@ function verDetalle(id) {
 
             renderCarrusel();
 
-            // Puedes personalizar la disponibilidad aquí
             document.getElementById("disponibilidad").innerHTML = `<b>Disponible:</b> Sí`;
 
-            // Botón de reservar
             document.getElementById("btnReservar").onclick = function() {
-                let usuario = null;
-                try {
-                    usuario = JSON.parse(localStorage.getItem('usuario'));
-                } catch (e) {
-                    usuario = null;
-                }
-                if (!usuario || !usuario.id) {
-                    if (typeof abrirmodal === "function") {
-                        // Aquí el modal de login
-                        document.getElementById('modal-fotos').remove(); // Cierra el modal de detalle antes de abrir el de login
-                        abrirmodal();
-                    } else {
-                        alert("Debes iniciar sesión para reservar.");
-                    }
-                    return;
-                }
-                alert("¡Reserva realizada para la habitación #" + hab.numero + "!");
+                fetch('../backend/verificarlogin.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            if (typeof abrirmodal === "function") {
+                                document.getElementById('modal-fotos').remove();
+                                abrirmodal();
+                            } else {
+                                alert("Debes iniciar sesión para reservar.");
+                            }
+                            return;
+                        }
+
+                        const fecha_ingreso = document.getElementById("fecha_ingreso1").value;
+                        const fecha_salida = document.getElementById("fecha_salida1").value;
+
+                        if (!fecha_ingreso || !fecha_salida) {
+                            alert("Por favor, selecciona las fechas de ingreso y salida antes de reservar.");
+                            return;
+                        }
+
+                        fetch('../api/reservas/crear.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                habitacion_id: hab.id,
+                                fecha_ingreso: fecha_ingreso,
+                                fecha_salida: fecha_salida
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("¡Reserva realizada con éxito!");
+                                document.getElementById('modal-fotos').remove();
+                            } else {
+                                alert(data.message || "Error al realizar la reserva");
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert("Error al realizar la reserva");
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error al verificar sesión:', error);
+                        alert("Error al verificar tu sesión");
+                    });
             };
+        });
+}
+
+function redireccionarMiCuenta() {
+    fetch('../backend/verificarlogin.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (data.rol === 'administrador') {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'usuarios.html';
+                }
+            } else {
+                // If not logged in, open the login modal (assuming it's defined globally or accessible)
+                if (typeof abrirmodal === 'function') {
+                    abrirmodal(); // This is the modal for login/registration from ajax.js or index.html
+                } else if (typeof abrirLoginModal === 'function') {
+                    abrirLoginModal(); // Assuming this function exists in index.html for the auth modal
+                } else {
+                    alert('Debes iniciar sesión para acceder a tu cuenta.');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error al verificar sesión:', error);
+            alert('Ocurrió un error al verificar tu sesión.');
         });
 }

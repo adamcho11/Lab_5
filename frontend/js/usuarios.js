@@ -107,10 +107,8 @@ function cancelarReserva(id) {
 }
 
 function logout() {
-    fetch("../backend/logout.php")
+    fetch("../api/usuarios/logout.php", { method: "POST", credentials: "include" })
         .then(() => {
-            // Remove the userId cookie on logout
-            document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
             window.location.href = "index.html";
         });
 }

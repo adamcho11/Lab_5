@@ -8,12 +8,17 @@ if (!$idHabitacion) {
     exit;
 }
 
-// Primero, eliminar las fotos asociadas
+// Primero, eliminar las reservas asociadas
+$stmtReservas = $con->prepare("DELETE FROM reservas WHERE habitacion_id = ?");
+$stmtReservas->bind_param("i", $idHabitacion);
+$stmtReservas->execute();
+
+// Luego, eliminar las fotos asociadas
 $stmtFotos = $con->prepare("DELETE FROM fotografias_habitacion WHERE habitacion_id = ?");
 $stmtFotos->bind_param("i", $idHabitacion);
 $stmtFotos->execute();
 
-// Luego, eliminar la habitación
+// Finalmente, eliminar la habitación
 $stmt = $con->prepare("DELETE FROM habitaciones WHERE id = ?");
 $stmt->bind_param("i", $idHabitacion);
 

@@ -1,43 +1,43 @@
 body {
     font-family: Arial, sans-serif;
-    background: #f9f9f9; /* Changed to match estilos.css */
+    background: #f9f9f9;
     margin: 0;
     padding: 0;
 }
-.main-container { /* New container for the whole admin page content */
+.main-container {
     display: flex;
     flex-direction: column;
-    max-width: 1100px; /* Added to match container1 in estilos.css */
-    margin: 50px auto 0 auto; /* Added to center and position */
-    background: #fff; /* Changed to match container1 in estilos.css */
-    padding: 30px 30px 24px 30px; /* Changed to match container1 in estilos.css */
-    border-radius: 12px; /* Changed to match container1 in estilos.css */
-    box-shadow: 0 2px 14px rgba(0,0,0,0.06); /* Changed to match container1 in estilos.css */
+    max-width: 1100px;
+    margin: 50px auto 0 auto;
+    background: #fff;
+    padding: 30px 30px 24px 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.06);
 }
-.topbar { /* Adapted from index.html */
-    background: none; /* No background here, will be transparent */
-    color: #9b8137; /* Text color for buttons etc. */
-    padding: 0; /* Remove padding here, controlled by inner elements */
+.topbar {
+    background: none;
+    color: #9b8137;
+    padding: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 18px; /* Added to match estilos.css topbar margin */
+    margin-bottom: 18px;
 }
-.topbar h1, .topbar h2, .topbar .logo { /* These are now in admin-title */
+.topbar h1, .topbar h2, .topbar .logo {
     display: none;
 }
 .topbar .btn1 {
-    background: #9b8137; /* Gold color from index.html buttons */
+    background: #9b8137;
     color: #fff;
     font-weight: bold;
     border: none;
-    border-radius: 7px; /* Changed to match estilos.css */
-    padding: 10px 22px; /* Changed to match estilos.css */
+    border-radius: 7px;
+    padding: 10px 22px;
     cursor: pointer;
-    margin-left: 8px; /* Added margin */
+    margin-left: 8px;
 }
-.user-info select { /* Renamed from .topbar select */
+.user-info select {
     padding: 5px 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -45,7 +45,6 @@ body {
     color: #333;
 }
 
-/* New section for the main title */
 .admin-title {
     color: #9b8137;
     text-align: center;
@@ -56,26 +55,25 @@ body {
     display: inline-block;
     margin: 0;
     color: #9b8137;
-    font-size: 2rem; /* Adjusted for consistency */
+    font-size: 2rem;
 }
 .admin-title h2 {
-    font-size: 1.5rem; /* Adjusted for consistency */
+    font-size: 1.5rem;
     margin-left: 10px;
 }
 
-/* Admin Panel Specific Layout */
-.admin-content-wrapper { /* New wrapper for sidebar and main content */
+.admin-content-wrapper {
     display: flex;
     flex-grow: 1;
     width: 100%;
 }
-#contenido_21 { /* Sidebar */
+#contenido_21 {
     width: 250px;
     background: #fff;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
     flex-shrink: 0;
-    display: none; /* Hide sidebar by default */
+    display: none;
 }
 #contenido_21 button {
     display: block;
@@ -94,17 +92,16 @@ body {
 #contenido_21 button:hover {
     background: #7a6823;
 }
-#contenido_22 { /* Main content area */
+#contenido_22 {
     flex-grow: 1;
     padding: 20px;
-    background: transparent; /* Changed to transparent */
+    background: transparent;
 }
 #contenido_221 h1 {
     font-size: 2em;
     color: #9b8137;
     margin-bottom: 20px;
 }
-
 
 #modal {
     display: none; 
@@ -121,14 +118,14 @@ body {
     justify-content: center;
 }
 #cuadromodal {
-    margin: 200px;
+    margin:200px 200px 400px 550px ;
     background: #fff;
     padding: 36px 30px 24px 30px;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-    width: 90%; /* Responsive width */
-    max-width: 520px; /* Max width for larger screens */
-    position: relative; /* Needed for absolute positioning of close button */
+    width: 90%;
+    max-width: 520px;
+    position: relative;
 }
 #cuadromodal h2 {
     color: #9b8137;
@@ -169,7 +166,7 @@ body {
 .btn-close:hover {
     color: #7a6823;
 }
-/* Table styles for user/habitacion lists */
+
 #tablaUser, table {
     width: 100%;
     border-collapse: collapse;
@@ -191,7 +188,7 @@ body {
 #tablaUser tr:hover, table tr:hover {
     background-color: #ddd;
 }
-/* Styles for generated cards */
+
 #card {
     display: flex;
     flex-wrap: wrap;

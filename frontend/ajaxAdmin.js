@@ -19,13 +19,12 @@ function abrirmodal(boton) {
     const idHabitacion = boton;
     console.log(idHabitacion);
     fetch('formCrear.html')
-        .then(response => response.text())  // Cargar como texto, no JSON
+        .then(response => response.text())
         .then(data => {
             var modal = document.getElementById('modal');
-            modal.style.display = 'block';  // Mostrar el modal
+            modal.style.display = 'block';
             var contenido = document.getElementById('contenidomodal');
-            contenido.innerHTML = data;  // Insertar el contenido HTML dentro del modal
-            // Obtén los elementos del DOM
+            contenido.innerHTML = data;
 
             var formH = document.getElementById('datosH');
             var formTH = document.getElementById('datosTH');
@@ -51,7 +50,6 @@ function abrirmodal(boton) {
                 modal.style.display = 'none';
             });
 
-            // Cerrar el modal haciendo clic fuera del contenido
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     modal.style.display = 'none';
@@ -69,7 +67,6 @@ function selectUser() {
         cerrarcesion();
     }
 }
-
 
 function mostrartabla() {
     fetch('../api/usuarios/mostrar.php')
@@ -186,7 +183,7 @@ function mostrarHabitaciones() {
 
             const div3 = document.createElement('div');
             div3.style.padding = "20px";
-            div3.innerHTML = generarcarts(data); // 👈 ahora correcto
+            div3.innerHTML = generarcarts(data);
 
             div1.appendChild(div2);
             div1.appendChild(div3);
@@ -221,9 +218,7 @@ function generarcarts(habitaciones) {
     return card;
 }
 
-
 function crearhabitacion() {
-
     const TpH = document.getElementById('TipoH');
     const idTpH = TpH.value
     const form = document.getElementById('datosH');
@@ -239,7 +234,6 @@ function crearhabitacion() {
             modal.style.display = 'none';
             mostrarHabitaciones();
         })
-
 }
 
 function mostrarTH() {
@@ -310,21 +304,18 @@ function eliminarHabitacion(idHabitacion) {
     .then(data => {
         alert(data.message);
         if (data.success) {
-            // Recargar la lista de habitaciones o eliminar el elemento del DOM
-            mostrarHabitaciones(); // o recargar la sección
+            mostrarHabitaciones();
         }
     });
 }
-
 
 function cerrarcesion() {
     fetch('../backend/logout.php')
         .then(Response => Response.json())
         .then(data => {
-            window.location.href = '../Pagina Principal/index.html';
+            window.location.href = 'index.html';
         })
 }
-
 
 function modalEdit(tipoform, id) {
     fetch('formEdit.html')
@@ -378,6 +369,12 @@ function modalEdit(tipoform, id) {
 
             document.querySelector('#cerrar').addEventListener('click', () => {
                 modal.style.display = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
             });
         });
 }
@@ -455,6 +452,12 @@ function abrirModalDetalle(id) {
             document.querySelector('#cerrar').addEventListener('click', () => {
                 modal.style.display = 'none';
             });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
         });
 }
 
@@ -479,7 +482,7 @@ function cambiarEstado(idReserva, nuevoEstado) {
     .then(data => {
         if (data.success) {
             alert(data.message);
-            abrirModalDetalle(idReserva); // recargar datos actualizados
+            abrirModalDetalle(idReserva);
         } else {
             alert(data.message);
         }
@@ -487,7 +490,7 @@ function cambiarEstado(idReserva, nuevoEstado) {
 }
 
 const menuToggleButton = document.getElementById('BtnMenu');
-let isSidebarOpen = false; // This variable controls sidebar visibility
+let isSidebarOpen = false;
 
 menuToggleButton.addEventListener('click', () => {
     const sidebar = document.getElementById('contenido_21');
@@ -496,5 +499,5 @@ menuToggleButton.addEventListener('click', () => {
     } else {
         sidebar.style.display = "none";
     }
-    isSidebarOpen = !isSidebarOpen; // Toggle the variable
+    isSidebarOpen = !isSidebarOpen;
 });

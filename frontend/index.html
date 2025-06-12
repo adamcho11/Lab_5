@@ -75,7 +75,7 @@
         <div class="topbar">
             <button class="btn1" onclick="abrirLoginModal()">Iniciar sesión</button>
             <button class="btn1" onclick="abrirRegistroModal()">Registrarse</button>
-            <button class="btn1" onclick="window.location='usuarios.html'">Mi cuenta</button>
+            <button class="btn1" onclick="redireccionarMiCuenta()">Mi cuenta</button>
         </div>
         <h1>HotelApp</h1>
         <div class="searchbox1">
@@ -154,7 +154,6 @@
             document.getElementById('registroBox').style.display = 'block';
         }
 
-        // Cerrar modal al hacer clic fuera
         window.onclick = function(event) {
             const modal = document.getElementById('authModal');
             if (event.target == modal) {
@@ -162,7 +161,6 @@
             }
         }
 
-        // Login form submission
         document.getElementById("loginForm").onsubmit = function(e) {
             e.preventDefault();
             const email = document.getElementById("loginEmail").value;
@@ -182,7 +180,6 @@
             });
         }
 
-        // Registro form submission
         document.getElementById("registroForm").onsubmit = function(e) {
             e.preventDefault();
             const nombre = document.getElementById("registroNombre").value;
