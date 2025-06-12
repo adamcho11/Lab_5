@@ -5,7 +5,8 @@ require_once '../../backend/conexion_bd.php';
 $id = $_GET['id'];
 $estado = $_GET['estado'];
 
-$stmt = $con->prepare("UPDATE usuarios SET estado_cuenta=? WHERE id=?");
+$stmt = $con->prepare("UPDATE usuarios SET estado=? WHERE id=?");
+
 $stmt->bind_param("si", $estado, $id);
 
 $mensaje = "Cuenta: ".$estado;

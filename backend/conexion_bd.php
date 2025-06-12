@@ -1,14 +1,12 @@
 <?php
-$host = 'localhost:3307';
-$user = 'root';
-$pass = '';
-$db = 'hotel';
+$host = "localhost";
+$user = "root";
+$password = "";
+$database = "hotel";
 
-$con = new mysqli($host, $user, $pass, $db);
+$con = new mysqli($host, $user, $password, $database);
+
 if ($con->connect_error) {
     die("Error de conexión: " . $con->connect_error);
-}
-else {
-    //echo "conexion exitosa";
 }
 ?>

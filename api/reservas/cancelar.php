@@ -1,25 +1,43 @@
 <?php
-session_start();
-if (!isset($_SESSION['usuario'])) {
-    echo json_encode(['success' => false, 'mensaje' => 'Debes iniciar sesión']); exit;
-}
 require_once '../../backend/conexion_bd.php';
-$data = json_decode(file_get_contents("php://input"));
-$id = $data->id ?? 0;
-$stmt = $con->prepare("SELECT usuario_id FROM reservas WHERE id=?");
-$stmt->bind_param("i", $id);
-$stmt->execute();
-$res = $stmt->get_result();
-$row = $res->fetch_assoc();
-$es_admin = $_SESSION['usuario']['rol'] === 'administrador';
-$es_propietario = $_SESSION['usuario']['id'] == ($row['usuario_id'] ?? 0);
-if (!$es_admin && !$es_propietario) {
-    echo json_encode(['success' => false, 'mensaje' => 'No permitido']); exit;
+
+header('Content-Type: application/json');
+
+// Get userId from cookie
+$userId = $_COOKIE['userId'] ?? null;
+
+if (!$userId) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'mensaje' => 'No autenticado.']);
+    exit();
 }
-if ($id) {
-    $stmt = $con->prepare("UPDATE reservas SET estado='cancelada' WHERE id=?");
-    $stmt->bind_param("i", $id);
+
+$data = json_decode(file_get_contents("php://input"));
+$reservaId = $data->id ?? 0;
+
+if ($reservaId) {
+    // Verify that the reservation belongs to the authenticated user
+    $stmt = $con->prepare("SELECT id FROM reservas WHERE id = ? AND id_usuario = ?");
+    $stmt->bind_param("ii", $reservaId, $userId);
     $stmt->execute();
-    echo json_encode(['success' => true]);
-} else echo json_encode(['success' => false]);
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        http_response_code(403);
+        echo json_encode(['success' => false, 'mensaje' => 'No tienes permiso para cancelar esta reserva.']);
+        exit();
+    }
+
+    $stmt = $con->prepare("UPDATE reservas SET estado = 'cancelada' WHERE id = ?");
+    $stmt->bind_param("i", $reservaId);
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'mensaje' => 'Reserva cancelada correctamente.']);
+    } else {
+        echo json_encode(['success' => false, 'mensaje' => 'Error al cancelar reserva.']);
+    }
+} else {
+    echo json_encode(['success' => false, 'mensaje' => 'ID de reserva no proporcionado.']);
+}
+
+$con->close();
 ?>

@@ -1,19 +1,31 @@
 <?php
-session_start();
 require_once '../../backend/conexion_bd.php';
 
-$id = $_SESSION['id'];
+header('Content-Type: application/json');
 
-// Usar sentencia preparada para evitar inyección SQL
-$stmt = $con->prepare("SELECT id, nombre, email, rol, estado_cuenta AS estado FROM usuarios WHERE id = ?");
-$stmt->bind_param("i", $id);
-$stmt->execute();
-$resultado = $stmt->get_result();
+// Get userId from cookie
+$userId = $_COOKIE['userId'] ?? null;
 
-if ($resultado && $fila = $resultado->fetch_assoc()) {
-    echo json_encode($fila);
-} else {
-    echo json_encode(['success' => false, 'mensaje' => 'Usuario no encontrado']);
+if (!$userId) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'mensaje' => 'No autenticado.']);
+    exit();
 }
+
+$stmt = $con->prepare("SELECT id, nombre, email, rol FROM usuarios WHERE id=?");
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$usuario = $result->fetch_assoc();
+
+if ($usuario) {
+    echo json_encode($usuario);
+} else {
+    http_response_code(404);
+    echo json_encode(['success' => false, 'mensaje' => 'Usuario no encontrado.']);
+}
+
+$stmt->close();
+$con->close();
 ?>
 

@@ -5,27 +5,20 @@ include('conexion_bd.php');
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-// Consulta para buscar usuario con email y password
-$sql = "SELECT * FROM usuarios WHERE email = ? AND contraseña = ?";
-
-$stmt = $con->prepare($sql);
-$stmt->bind_param("ss", $email, $password);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($user = $result->fetch_assoc()) {
-    $_SESSION['id'] = $user['id'];
-    $_SESSION['email'] = $user['email'];
-    $_SESSION['nombre'] = $user['nombre'];
-    $_SESSION['rol'] = $user['rol'];
-    $_SESSION['estado_cuenta'] = $user['estado_cuenta'];
-
-    $respuesta = [
-        'success' => true,
-        'message' => 'Usuario autenticado correctamente',
-        'nombre' => $user['nombre'],
-        'estado_cuenta' => $user['estado_cuenta']
-    ];
+    if ($usuario) {
+        // Set HttpOnly cookie for session management
+        setcookie("userId", $usuario['id'], [
+            'expires' => time() + (86400 * 30), // 30 days
+            'path' => '/',
+            'httponly' => true,
+            // 'secure' => true, // Uncomment in production with HTTPS
+            'samesite' => 'Lax'
+        ]);
+        $_SESSION['usuario'] = $usuario;
+        echo json_encode(['success' => true, 'rol' => $usuario['rol'], 'nombre' => $usuario['nombre']]);
+    } else {
+        echo json_encode(['success' => false, 'mensaje' => 'Credenciales incorrectas']);
+    }
 } else {
     $respuesta = [
         'success' => false,

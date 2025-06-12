@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>HotelApp - Inicio</title>
+    <script src="js/habitaciones.js"></script>
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-box {
+            background: #fff;
+            padding: 36px 30px 24px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px #0002;
+            width: 520px;
+        }
+        .auth-box h2 {
+            color: #9b8137;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .auth-box label {
+            font-weight: 600;
+            margin-top: 8px;
+            display: block;
+        }
+        .auth-box input {
+            width: 100%;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+        .auth-box button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: #9b8137;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+        .msg {
+            color: #a00;
+            font-size: 0.98rem;
+            text-align: center;
+            margin: 12px 0 0 0;
+        }
+        .auth-link {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.95rem;
+        }
+        .auth-link a {
+            color: #9b8137;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container1">
+        <div class="topbar">
+            <button class="btn1" onclick="abrirLoginModal()">Iniciar sesión</button>
+            <button class="btn1" onclick="abrirRegistroModal()">Registrarse</button>
+            <button class="btn1" onclick="redireccionarMiCuenta()">Mi cuenta</button>
+        </div>
+        <h1>HotelApp</h1>
+        <div class="searchbox1">
+            <label>Ingreso:</label>
+            <input type="date" id="fecha_ingreso1">
+            <label>Salida:</label>
+            <input type="date" id="fecha_salida1">
+            <button class="btn1" onclick="buscarHabitaciones()">Buscar habitaciones</button>
+        </div>
+        <div id="resultados">
+            <!-- Aquí se mostrarán habitaciones -->
+        </div>
+    </div>
+
+    <!-- Modal de Autenticación (Login/Registro) -->
+    <div id="authModal" class="modal">
+        <!-- Login Form -->
+        <div id="loginBox" class="auth-box">
+            <h2>Iniciar Sesión</h2>
+            <form id="loginForm">
+                <label>Correo electrónico</label>
+                <input type="email" id="loginEmail" required>
+                <label>Contraseña</label>
+                <input type="password" id="loginPassword" required>
+                <button type="submit">Entrar</button>
+            </form>
+            <div class="msg" id="loginMsg"></div>
+            <div class="auth-link">
+                ¿No tienes cuenta? <a onclick="mostrarRegistro()">Regístrate aquí</a>
+            </div>
+        </div>
+
+        <!-- Registro Form -->
+        <div id="registroBox" class="auth-box" style="display: none;">
+            <h2>Crear Cuenta</h2>
+            <form id="registroForm">
+                <label>Nombre completo</label>
+                <input type="text" id="registroNombre" required>
+                
+                <label>Correo electrónico</label>
+                <input type="email" id="registroEmail" required>
+                
+                <label>Contraseña</label>
+                <input type="password" id="registroPassword" required>
+                
+                <label>Confirmar contraseña</label>
+                <input type="password" id="registroConfirmPassword" required>
+                
+                <button type="submit">Registrarse</button>
+            </form>
+            <div class="msg" id="registroMsg"></div>
+            <div class="auth-link">
+                ¿Ya tienes cuenta? <a onclick="mostrarLogin()">Iniciar sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function abrirLoginModal() {
+            document.getElementById('authModal').style.display = 'flex';
+            mostrarLogin();
+        }
+
+        function abrirRegistroModal() {
+            document.getElementById('authModal').style.display = 'flex';
+            mostrarRegistro();
+        }
+
+        function mostrarLogin() {
+            document.getElementById('loginBox').style.display = 'block';
+            document.getElementById('registroBox').style.display = 'none';
+        }
+
+        function mostrarRegistro() {
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('registroBox').style.display = 'block';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('authModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        document.getElementById("loginForm").onsubmit = function(e) {
+            e.preventDefault();
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+            fetch("../backend/autenticar.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.rol === 'administrador' ? "admin.html" : "usuarios.html";
+                } else {
+                    document.getElementById("loginMsg").textContent = data.mensaje || "Credenciales incorrectas";
+                }
+            });
+        }
+
+        document.getElementById("registroForm").onsubmit = function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById("registroNombre").value;
+            const email = document.getElementById("registroEmail").value;
+            const password = document.getElementById("registroPassword").value;
+            const confirmPassword = document.getElementById("registroConfirmPassword").value;
+
+            if (password !== confirmPassword) {
+                document.getElementById("registroMsg").textContent = "Las contraseñas no coinciden";
+                return;
+            }
+
+            fetch("../api/usuarios/registrar.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nombre, email, password })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = "usuarios.html";
+                } else {
+                    document.getElementById("registroMsg").textContent = data.mensaje || "Error al registrar usuario";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

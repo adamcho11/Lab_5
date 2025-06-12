@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styleadmin.css">
+</head>
+
+<body onload="javascript:cargardatos()">
+    <div class="main-container">
+        <div class="topbar">
+            <div>
+                <button id="BtnMenu" class="btn1">=</button>
+            </div>
+            <div class="user-info">
+                <select id="Option" onchange="javascript:selectUser()">
+                    <option selected id="NombreUser"></option>
+                    <option value="cerrarLog">Cerrar Sesion</option>
+                </select>
+            </div>
+        </div>
+        <div class="admin-title" onclick="window.location.href = 'index.html'">
+            <h1>H</h1>
+            <h2>Hotel</h2>
+        </div>
+        <div class="admin-content-wrapper">
+            <div class="sidebar" id="contenido_21">
+                <button id="btn1" onclick="javascript:mostrartabla()">Usuarios</button>
+                <button id="btn2" onclick="javascript:mostrarHabitaciones()">Habitaciones</button>
+            </div>
+            <div class="main-content" id="contenido_22">
+                <div id="contenido_221">
+                    <h1>Panel del Administrador</h1>
+                </div>
+                <div id="contenido_222"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" style="display: none;">
+        <div id="cuadromodal">
+            <button id="cerrar" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div id="contenidomodal">
+            </div>
+        </div>
+    </div>
+    <!-- Script moved to ajaxAdmin.js -->
+    <script src="ajaxAdmin.js"></script>
+</body>
+
+</html>
