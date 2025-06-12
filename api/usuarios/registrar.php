@@ -1,4 +1,4 @@
-<?php
+<?php session_start();
 require_once '../../backend/conexion_bd.php';
 $data = json_decode(file_get_contents("php://input"));
 $nombre = $data->nombre ?? '';

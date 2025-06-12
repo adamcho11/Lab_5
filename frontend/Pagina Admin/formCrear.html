@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="datosH" action="javascript:crearhabitacion()" method="post" enctype="multipart/form-data">
+        <div>
+            <h1>H</h1>
+            <h2>Hotel</h2>
+        </div>
+        <h2>Crear Habitacion</h2>
+        <input type="text" id="nombreH" name="nombreH" placeholder="Nombre de la habitacion" required>
+        <input type="number" id="precio" name="precio" placeholder="Precio de la Habitacion" required>
+        <input type="number" id="piso" name="piso" placeholder="Piso de la Habitacion" required>
+        <select name="TipoH" id="TipoH">
+        </select>
+        <button id="BtnTh" onclick="javascript:abrirmodal('TH')">+ Nuevo Tipo de Habitacion</button>
+        <input type="submit" value="Crear Habitacion">
+    </form>
+    <form id="datosTH" action="javascript:crearTipoHabitacion()" method="post" enctype="multipart/form-data">
+        <div>
+            <h1>H</h1>
+            <h2>Hotel</h2>
+        </div>
+        <h2>Crear Tipo de Habitacion</h2>
+        <input type="text" id="nombretipo" name="nombretipo" placeholder="Nombre del Tipo de Habitacion" required>
+        <input type="text" id="superficie" name="superficie" placeholder="superficie de la habilitado:" required>
+        <input type="number" id="ncamas" name="ncamas" placeholder="Numero de Camas" required>
+        <input type="submit" value="Crear TipoHabitacion">
+    </form>
+    <form id="datosFH" action="javascript:agregarImagen()" method="post" enctype="multipart/form-data">
+        <div>
+            <h1>H</h1>
+            <h2>Hotel</h2>
+        </div>
+        <h2>Crear Fotografia para la habitacion</h2>
+        <label for="fotografia">Seleccione Una fotografia par la Habitacion</label>
+        <input type="file" id="fotografia" name="fotografia" accept="imgHabit/*" required>
+        <input type="number" id="orde" name="orden" placeholder="Orden de Habitacion" required>
+        <input type="number" id="inputIdHabitacion" name="habitacion" hidden>
+        <input type="submit" value="Agregar Imagen a la Habitacion">
+    </form>
+</body>
+
+</html>

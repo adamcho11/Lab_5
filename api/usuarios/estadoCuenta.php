@@ -6,6 +6,7 @@ $id = $_GET['id'];
 $estado = $_GET['estado'];
 
 $stmt = $con->prepare("UPDATE usuarios SET estado=? WHERE id=?");
+
 $stmt->bind_param("si", $estado, $id);
 
 $mensaje = "Cuenta: ".$estado;
